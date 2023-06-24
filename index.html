@@ -1,1 +1,107 @@
-<div>Hello</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f1f1f1;
+        }
+
+        .box {
+            position: absolute;
+            top: -100px;
+            padding: 20px;
+            background-color: #FFF;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            animation: slide 1s forwards;
+        }
+
+        .typing-text {
+            visibility: hidden;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 20px;
+            animation: typing 3s steps(30) 1s, blink 0.5s step-end infinite alternate;
+        }
+
+        .loader-text {
+            visibility: hidden;
+            font-size: 14px;
+            margin-top: 10px;
+            animation: loader 2s 4s forwards;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #007bff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            visibility: hidden;
+            animation: loader 1s infinite linear 4s;
+        }
+
+        @keyframes slide {
+            100% {
+                top: 50px;
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+                visibility: visible;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        @keyframes loader {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="typing-text">What is Idiomic?</div>
+        <div class="loader-text">
+            <span class="loader"></span> Loading...
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            document.querySelector(".loader-text").style.visibility = "visible";
+            document.querySelector(".loader").style.visibility = "visible";
+        }, 4000);
+
+        setTimeout(() => {
+            document.querySelector(".loader-text").innerHTML =
+                "Idiomic helps make your libraries be more usable by developers";
+        }, 6000);
+    </script>
+</body>
+</html>
