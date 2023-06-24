@@ -1,107 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Idiomic Animation</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f1f1f1;
-        }
+      body {
+        margin: 100px 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        width: 100vw;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
 
-        .box {
-            position: absolute;
-            top: -100px;
-            padding: 20px;
-            background-color: #FFF;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            text-align: center;
-            animation: slide 1s forwards;
-        }
+      .search-box {
+        position: relative;
+        top: -20px;
+        opacity: 0;
+        animation: slideIn 1s forwards;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-        .typing-text {
-            visibility: hidden;
-            white-space: nowrap;
-            overflow: hidden;
-            font-size: 20px;
-            animation: typing 3s steps(30) 1s, blink 0.5s step-end infinite alternate;
-        }
+      .loader {
+        margin-top: 20px;
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f0f0f0;
+        border-top: 4px solid #000;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
 
-        .loader-text {
-            visibility: hidden;
-            font-size: 14px;
-            margin-top: 10px;
-            animation: loader 2s 4s forwards;
-        }
+      #result {
+        width: 300px;
+        padding: 20px;
+        border-top: 1px solid #c3c3c3;
+        margin-top: 20px;
+      }
 
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #007bff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            visibility: hidden;
-            animation: loader 1s infinite linear 4s;
-        }
+      #search {
+        border-radius: 20px;
+        border: 1px solid #d3d3d8;
+        padding: 0 10px;
+        color: #333;
+      }
 
-        @keyframes slide {
-            100% {
-                top: 50px;
-            }
+      @keyframes slideIn {
+        100% {
+          top: 0;
+          opacity: 1;
         }
+      }
 
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-                visibility: visible;
-            }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
         }
-
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        @keyframes loader {
-            0% {
-                transform: rotate(0);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+      }
     </style>
-</head>
-<body>
-    <div class="box">
-        <div class="typing-text">What is Idiomic?</div>
-        <div class="loader-text">
-            <span class="loader"></span> Loading...
-        </div>
+  </head>
+  <body>
+    <div class="search-box">
+      <input
+        type="text"
+        id="search"
+        style="width: 300px; height: 40px; font-size: 18px;"
+      />
+
+      <div id="result"></div>
+      <pre class="loader" id="loader"></pre>
     </div>
 
     <script>
-        setTimeout(() => {
-            document.querySelector(".loader-text").style.visibility = "visible";
-            document.querySelector(".loader").style.visibility = "visible";
-        }, 4000);
+      document.addEventListener("DOMContentLoaded", () => {
+        const search = document.getElementById("search");
+        const loader = document.getElementById("loader");
+        const result = document.getElementById("result");
 
-        setTimeout(() => {
-            document.querySelector(".loader-text").innerHTML =
-                "Idiomic helps make your libraries be more usable by developers";
-        }, 6000);
+        function sleep(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function typeText(element, text, delay = 50) {
+          for (let i = 0; i < text.length; i++) {
+            if (element.tagName === "INPUT") {
+              element.value += text.charAt(i);
+            } else {
+              element.innerHTML += text.charAt(i);
+            }
+
+            await sleep(delay);
+          }
+        }
+
+        async function animate() {
+          await sleep(1000);
+          await typeText(search, "What is Idiomic ?", 50);
+          loader.style.display = "block";
+          await sleep(2000);
+          loader.style.display = "none";
+          await typeText(
+            result,
+            `If your library's API were a language like English, Idiomic ensures your users speak it like Shakespeare.`,
+            20
+          );
+          result.innerHTML += "<br><br>";
+          await sleep(1000);
+          await typeText(result, "Coming soon ...");
+        }
+
+        animate();
+      });
     </script>
-</body>
+  </body>
 </html>
